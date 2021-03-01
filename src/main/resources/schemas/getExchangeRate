@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "rates": {
+      "type": "object",
+      "properties": {
+        "CAD": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "CAD"
+      ]
+    },
+    "base": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "rates",
+    "base",
+    "date"
+  ]
+}
