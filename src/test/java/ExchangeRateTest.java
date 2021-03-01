@@ -7,7 +7,6 @@ import utils.Schema;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
@@ -34,20 +33,24 @@ public class ExchangeRateTest {
 
     @Test
     public void testSpecificExchangeDate() {
-        LocalDate date = LocalDate.now().minus(Period.ofDays((new Random().nextInt(365 * 70))));
+        final LocalDate date = LocalDate.now().minus(Period.ofDays((new Random().nextInt(365 * 2))));
         String pathParam = date.toString();
         String schemaPath = "schemas/getExchangeRate";
         System.out.println(pathParam);
-
-
+        String respBody = "";
 
         ValidatableResponse validatableResponse = ExchangeRate.getExchangeRate(pathParam, STATUS_CODE_OK);
 
+        respBody = validatableResponse.extract().response().jsonPath().getString("date");
+
+        assertEquals(STATUS_CODE_OK, validatableResponse.extract().response().getStatusCode());
+        assertEquals(pathParam, respBody);
+        Schema.schemaValidator(validatableResponse, schemaPath);
     }
 
     @Test
     public void testNonRegisteredExchangeDate() {
-        LocalDate date = LocalDate.now().minus(Period.ofDays((new Random().nextInt(365 * 70))));
+        final LocalDate date = LocalDate.now().minus(Period.ofDays((new Random().nextInt(365 * 70))));
         String pathParam = date.toString();
         int statusCode = HttpStatus.BAD_REQUEST_400;
         String respBody = "";
